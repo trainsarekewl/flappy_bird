@@ -1,110 +1,22 @@
 import pygame
-
 import sys
+from pathlib import Path
+from Bird import Bird
+from Pipes import Pipes
+import config
 
-import random
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # settings
-
-COLOR = (255, 255, 255)
-WINDOW_HEIGHT = 480
-WINDOW_LENGTH = 780
-JUMP_COOLDOWN = 1
-PIPE_SPEED = 3
-
-
-class Bird(pygame.sprite.Sprite):
-
-    # class variables
-    COLOR = (0, 255, 12)
-    JUMP_HEIGHT = -5
-    SIZE = 15
-    GRAVITY = 0.2
-
-    def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, self.SIZE, self.SIZE)
-        self.y_velocity = 0
-        self.image = pygame.image.load("flappy_bird/images/flappybird.png")
-        self.mask = None
-    
-    def jump(self):
-        self.y_velocity = self.JUMP_HEIGHT
-    
-    def fall(self):
-        self.rect.y += self.y_velocity
-        self.y_velocity += self.GRAVITY
-
-    def draw(self, window):
-        window.blit(self.image, (self.rect.x - 10, self.rect.y - 5))
-        #pygame.draw.rect(window, self.COLOR, self.rect)
-
-    def getYValue(self):
-        return self.rect.y
-    
-    def setYValue(self, yVal):
-        self.rect.y = yVal
-
-    def setYVelocity(self, yVelo):
-        self.y_velocity = yVelo
-
-    def getRect(self):
-        return self.rect
-
-
-
-    
-class Pipes(pygame.sprite.Sprite):
-    #global variables
-    global WINDOW_HEIGHT
-    global WINDOW_LENGTH
-    global WINDOW_LENGTH
-    global PIPE_SPEED
-
-    #pipe settings
-    
-    # class variables
-    COLOR = (0, 0, 0)
-    GAP = 140
-    WIDTH = 50
-    HEIGHT = 0
-
-
-    def __init__(self):
-        self.HEIGHT = random.randrange(10, WINDOW_HEIGHT - self.GAP + 10)
-        self.rectTop = pygame.Rect(WINDOW_LENGTH - 5, 0, self.WIDTH, self.HEIGHT)
-        self.rectBottom = pygame.Rect(WINDOW_LENGTH - 5, 0 + self.HEIGHT + self.GAP, self.WIDTH, 480 - self.HEIGHT)
-        self.mask = None
-    
-    def draw(self, window):
-        pygame.draw.rect(window, self.COLOR, self.rectTop)
-        pygame.draw.rect(window, self.COLOR, self.rectBottom)
-    
-    def move(self):
-        self.rectTop.x -= PIPE_SPEED
-        self.rectBottom.x -= PIPE_SPEED
-    
-    # getters
-    def getXVal(self):
-        return self.rectTop.x
-    
-    def getTopRect(self):
-        return self.rectTop
-    
-    def getBottomRect(self):
-        return self.rectBottom  
-    
-    def getWidth(self):
-        return self.WIDTH
+WINDOW_HEIGHT = config.WINDOW_HEIGHT
+WINDOW_LENGTH = config.WINDOW_LENGTH
+JUMP_COOLDOWN = config.JUMP_COOLDOWN
+PIPE_SPEED = config.PIPE_SPEED
+COLOR = config.COLOR
+BASE_DIR = config.BASE_DIR
 
 def main():
-
-    #settings
-    global WINDOW_HEIGHT
-    global WINDOW_LENGTH
-    global WINDOW_LENGTH
-    global JUMP_COOLDOWN
-    global PIPE_SPEED
-
     # initalize pygame stuff
     pygame.init()
     pygame.font.init()
